@@ -27,7 +27,6 @@ def get_url():
     lang = "python"
     min_stars = 20
     url = BASE_URL.format(min_stars, lang)
-    print(url)
     return url
 
 def request(url):
@@ -35,42 +34,39 @@ def request(url):
     response = response.json()
     return response
 
-BEAT_TIME = 0.04
 
-@contextmanager
-def beat(length: int = 1) -> None:
-    yield
-    time.sleep(length * BEAT_TIME)
+def get_table_data(response: str) -> list:
+    table_data = []
+    for project in random.sample(response["items"],min(5, 29)):
+        topics = "` `".join(project["topics"])
+        topics = f"`{topics}`"
+        topics = Markdown(topics, style="dim")
+        stars = "{:,}".format(project["stargazers_count"])
+        table_data.append(
+                    [
+                        project["name"], project["description"],
+                        str(stars), topics, "time"
+                    ]
+                )
+    return table_data
 
-def table(response):
-    first = True
+
+def display_table(table_data):
     table = Table(padding=(0,1,1,1))
     table.add_column("Project")
     table.add_column("Description")
     table.add_column("Stars")
     table.add_column("Tags")
     table.add_column("Last updated")
-    with Live(table, console=console, refresh_per_second=1):
-        for project in random.sample(response["items"],min(5, 29)):
-            topics = "` `".join(project["topics"])
-            topics = f"`{topics}`"
-            topics = Markdown(topics, style="dim")
-            stars = "{:,}".format(project["stargazers_count"])
-            if not first:
-                with beat(10):
-                    table.add_row(project["name"], project["description"],
-                                  str(stars),
-                                  topics, "time")
-            else:
-                table.add_row(project["name"], project["description"],
-                    str(stars),
-                    topics, "time")
-
-            first = False
-#        console.print(table)
+    table.add_row(*table_data[0])
+    with Live(table, console=console, refresh_per_second=4):
+        for row in table_data[1:]:
+            table.add_row(*row)
+            time.sleep(0.5)
 
 
+console.clear()
 url = get_url()
 response = request(url)
-console.clear()
-table(response)
+table_data = get_table_data(response)
+display_table(table_data)
