@@ -53,6 +53,7 @@ def get_table_data(response: str) -> list:
         topics = f"`{topics}`"
         topics = Markdown(topics, style="dim")
         stars = "{:,}".format(project["stargazers_count"])
+    #    stars = f":star: {stars}"
         issues = "{:,}".format(project["open_issues_count"])
         time = project["updated_at"]
         #day = re.match(time, r"^[0-9]{4}-[0-9]{2}-[0-9]{2}")
@@ -62,6 +63,9 @@ def get_table_data(response: str) -> list:
             time = "Today"
         else:
             delta = dt.today().date() - time.date()
+        if delta.days == 1:
+            time = f"{str(delta.days)} day"
+        else:
             time = f"{str(delta.days)} days"
         table_data.append(
                     [
@@ -74,12 +78,12 @@ def get_table_data(response: str) -> list:
 
 def display_table(table_data):
     table = Table(padding=(0,1,1,1))
-    table.add_column("Project")
-    table.add_column("Description")
-    table.add_column("Stars")
-    table.add_column("Issues")
-    table.add_column("Tags")
-    table.add_column("Last updated")
+    table.add_column("Project", header_style="bold cyan", style="bold cyan")
+    table.add_column("Description", header_style="bold green", style="italic green")
+    table.add_column("Stars", header_style="bold yellow", style="yellow")
+    table.add_column("Issues", header_style="bold grey66", style="grey66")
+    table.add_column("Tags", header_style="bold")
+    table.add_column("Last updated", header_style="red bold", style="red")
     table.add_row(*table_data[0])
     with Live(table, console=console, refresh_per_second=4):
         for row in table_data[1:]:
@@ -87,8 +91,13 @@ def display_table(table_data):
             time.sleep(0.5)
 
 
-url = get_url()
-console.clear()
-response = request(url)
-table_data = get_table_data(response)
-display_table(table_data)
+def cli() -> None:
+    url = get_url()
+    console.clear()
+    response = request(url)
+    table_data = get_table_data(response)
+    display_table(table_data)
+
+
+if __name__ == "__main__":
+    cli()
