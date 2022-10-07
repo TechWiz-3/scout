@@ -16,7 +16,7 @@ from rich.markdown import Markdown
 
 console = Console()
 
-TOKEN = os.getenv("UNFOLLOW_TOKEN")
+TOKEN = os.getenv("SCOUT_TOKEN")
 
 HEADERS = {'Authorization': 'token ' + TOKEN}
 
