@@ -13,7 +13,6 @@ You can search repos with the exact amount of stars you wish as well as your lan
 4. Install the following dependencies with these commands.
 ```
 pip install gh-scout
-pip install -r requirements.txt
 ```
 
 Before running `scout`:
