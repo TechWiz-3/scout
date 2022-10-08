@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+from email.policy import default
+import argparse
+from pickle import FALSE
 import requests
 import random
 import os
@@ -23,6 +26,8 @@ HEADERS = {'Authorization': 'token ' + TOKEN}
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
 BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20language:python%20topic:hacktoberfest"
 
+#global variable
+noColor = False;
 
 def get_url():
     standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
@@ -75,21 +80,30 @@ def get_table_data(response: str) -> list:
                 )
     return table_data
 
+def table_column(table):
+    if noColor:
+        table.add_column("Project", header_style="bold", style="bold")
+        table.add_column("Description", header_style="bold", style="italic")
+        table.add_column("Stars", header_style="bold")
+        table.add_column("Issues", header_style="bold")
+        table.add_column("Tags", header_style="bold")
+        table.add_column("Last updated", header_style="bold")
+    else:
+        table.add_column("Project", header_style="bold cyan", style="bold cyan")
+        table.add_column("Description", header_style="bold green", style="italic green")
+        table.add_column("Stars", header_style="bold yellow", style="yellow")
+        table.add_column("Issues", header_style="bold grey66", style="grey66")
+        table.add_column("Tags", header_style="bold")
+        table.add_column("Last updated", header_style="red bold", style="red")
 
 def display_table(table_data):
     table = Table(padding=(0,1,1,1))
-    table.add_column("Project", header_style="bold cyan", style="bold cyan")
-    table.add_column("Description", header_style="bold green", style="italic green")
-    table.add_column("Stars", header_style="bold yellow", style="yellow")
-    table.add_column("Issues", header_style="bold grey66", style="grey66")
-    table.add_column("Tags", header_style="bold")
-    table.add_column("Last updated", header_style="red bold", style="red")
+    table_column(table)
     table.add_row(*table_data[0])
     with Live(table, console=console, refresh_per_second=4):
         for row in table_data[1:]:
             table.add_row(*row)
             time.sleep(0.5)
-
 
 def cli() -> None:
     url = get_url()
@@ -100,4 +114,9 @@ def cli() -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--nocolor", help="default color for table",action="store_true")
+    args = parser.parse_args()
+    noColor = args.nocolor
+    
     cli()
