@@ -26,10 +26,13 @@ BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20lang
 
 
 def print_welcome_message() -> None:
-    Rule(
-        'Your personal opensource Scout',
+    rule = Rule(
+        '[b]Your personal opensource [purple]Scout',
         align="center",
+        style="yellow"
     )
+    console.print(rule)
+    print("")
 
 
 def get_url():
