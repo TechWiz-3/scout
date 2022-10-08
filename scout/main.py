@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import requests
 import random
 import os
@@ -23,42 +24,31 @@ TOKEN = os.getenv("SCOUT_TOKEN")
 HEADERS = {'Authorization': 'token ' + TOKEN}
 
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
-BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C={}%20language:{}%20topic:hacktoberfest"
+BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20language:python%20topic:hacktoberfest"
 
-
-def print_welcome_message() -> None:
-    rule = Rule(
-        '[b]Your personal opensource [purple]Scout',
-        align="center",
-        style="yellow"
-    )
-    console.print(rule)
-    print("")
-
+#global variable
+noColor = False;
 
 def get_url():
-    try:
+    if noColor:
+        standard = console.input("Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
+        lang = console.input("Project language: \[python] ")
+        keyword = console.input("You can enter a keyword for the search: \[optional] ")
+    else:
         standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
         lang = console.input("Project language: \[python] ")
         keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
 
-    except KeyboardInterrupt:
-        print('\nFarewell my friend, beware the crickets.\n')
-        sys.exit(1)
-
+    if standard.lower() in ("y", "yes", ""):
+        max_stars = 1000
     else:
-        if standard.lower() in ("y", "yes", ""):
-            max_stars = 1000
-        else:
-            max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
-
-        if lang == "":
-            lang = "python"
-
-        if keyword != "":
-            keyword = f"{keyword} "
-        url = BASE_URL.format(keyword, max_stars, lang)
-        return url
+        max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
+    if lang == "":
+        lang = "python"
+    if keyword != "":
+        keyword = f"{keyword} "
+    url = BASE_URL.format(keyword, max_stars, lang)
+    return url
 
 def request(url):
     page = random.randint(1,3)
@@ -90,30 +80,38 @@ def get_table_data(response: str) -> list:
             time = f"{str(delta.days)} days"
         table_data.append(
                     [
-                        "[link={}]{}[/link]".format(project["html_url"], project["full_name"]), project["description"],
+                        project["name"], project["description"],
                         str(stars), str(issues), topics, time
                     ]
                 )
     return table_data
 
+def table_column(table):
+    if noColor:
+        table.add_column("Project", header_style="bold", style="bold")
+        table.add_column("Description", header_style="bold", style="italic")
+        table.add_column("Stars", header_style="bold")
+        table.add_column("Issues", header_style="bold")
+        table.add_column("Tags", header_style="bold")
+        table.add_column("Last updated", header_style="bold")
+    else:
+        table.add_column("Project", header_style="bold cyan", style="bold cyan")
+        table.add_column("Description", header_style="bold green", style="italic green")
+        table.add_column("Stars", header_style="bold yellow", style="yellow")
+        table.add_column("Issues", header_style="bold grey66", style="grey66")
+        table.add_column("Tags", header_style="bold")
+        table.add_column("Last updated", header_style="red bold", style="red")
 
 def display_table(table_data):
     table = Table(padding=(0,1,1,1))
-    table.add_column("Project", header_style="bold cyan", style="bold cyan")
-    table.add_column("Description", header_style="bold green", style="italic green")
-    table.add_column("Stars", header_style="bold yellow", style="yellow")
-    table.add_column("Issues", header_style="bold grey66", style="grey66")
-    table.add_column("Tags", header_style="bold")
-    table.add_column("Last updated", header_style="red bold", style="red")
+    table_column(table)
     table.add_row(*table_data[0])
     with Live(table, console=console, refresh_per_second=4):
         for row in table_data[1:]:
             table.add_row(*row)
             time.sleep(0.5)
 
-
 def cli() -> None:
-    print_welcome_message()
     url = get_url()
     console.clear()
     response = request(url)
@@ -122,4 +120,9 @@ def cli() -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--nocolor", help="default color for table",action="store_true")
+    args = parser.parse_args()
+    noColor = args.nocolor
+    
     cli()
