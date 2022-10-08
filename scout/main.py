@@ -5,6 +5,7 @@ import random
 import os
 import time
 import re
+import sys
 from datetime import datetime as dt
 
 from contextlib import contextmanager
@@ -43,6 +44,7 @@ def get_url():
 
     except KeyboardInterrupt:
         print('\nFarewell my friend, beware the crickets.\n')
+        sys.exit(1)
 
     else:
         if standard.lower() in ("y", "yes", ""):
