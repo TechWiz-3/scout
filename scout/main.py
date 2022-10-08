@@ -74,8 +74,9 @@ def get_table_data(response: str) -> list:
         topics = f"`{topics}`"
         topics = Markdown(topics, style="dim")
         stars = "{:,}".format(project["stargazers_count"])
-    #    stars = f":star: {stars}"
+    	#stars = f":star: {stars}"
         issues = "{:,}".format(project["open_issues_count"])
+        forks = project["forks"]
         time = project["updated_at"]
         #day = re.match(time, r"^[0-9]{4}-[0-9]{2}-[0-9]{2}")
         time = time[:10]
@@ -88,12 +89,10 @@ def get_table_data(response: str) -> list:
             time = f"{str(delta.days)} day"
         else:
             time = f"{str(delta.days)} days"
-        table_data.append(
-                    [
-                        "[link={}]{}[/link]".format(project["html_url"], project["full_name"]), project["description"],
-                        str(stars), str(issues), topics, time
-                    ]
-                )
+        table_data.append([
+				"[link={}]{}[/link]".format(project["html_url"], project["full_name"]), project["description"],
+				str(stars), str(issues), str(forks), topics, time
+		])
     return table_data
 
 
@@ -103,6 +102,7 @@ def display_table(table_data):
     table.add_column("Description", header_style="bold green", style="italic green")
     table.add_column("Stars", header_style="bold yellow", style="yellow")
     table.add_column("Issues", header_style="bold grey66", style="grey66")
+    table.add_column("Forks", header_style="bold dark_orange", style="dark_orange")
     table.add_column("Tags", header_style="bold")
     table.add_column("Last updated", header_style="red bold", style="red")
     table.add_row(*table_data[0])
