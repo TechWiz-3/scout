@@ -23,7 +23,7 @@ TOKEN = os.getenv("SCOUT_TOKEN")
 HEADERS = {'Authorization': 'token ' + TOKEN}
 
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
-BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20language:python%20topic:hacktoberfest"
+BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C={}%20language:{}%20topic:hacktoberfest"
 
 
 def print_welcome_message() -> None:

@@ -8,7 +8,7 @@ setup(
     name="gh-scout",
     url="https://github.com/TechWiz-3/scout",
     author="Zac the Wise aka TechWiz-3",
-    version='0.2.0',
+    version='0.3.0',
     description="⭐ Find hacktoberfest repos to contribute to from your CLI",
 #    long_description_content_type='text/markdown',
 #    long_description=long_description,
