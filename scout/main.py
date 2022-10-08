@@ -22,7 +22,7 @@ TOKEN = os.getenv("SCOUT_TOKEN")
 HEADERS = {'Authorization': 'token ' + TOKEN}
 
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
-BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20language:python%20topic:hacktoberfest"
+BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C={}%20language:{}%20topic:hacktoberfest"
 
 
 def print_welcome_message() -> None:
@@ -40,7 +40,7 @@ def get_url():
     if standard.lower() in ("y", "yes", ""):
         max_stars = 1000
     else:
-        max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
+        max_stars = int(console.input("[blue]Star count range \[5-1000 is ideal]: "))
     lang = console.input("Project language: \[python] ")
     if lang == "":
         lang = "python"
