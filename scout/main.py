@@ -11,6 +11,7 @@ from contextlib import contextmanager
 
 from rich.live import Live
 from rich.console import Console
+from rich.rule import Rule
 from rich.table import Table
 from rich.markdown import Markdown
 
@@ -22,6 +23,16 @@ HEADERS = {'Authorization': 'token ' + TOKEN}
 
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
 BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20language:python%20topic:hacktoberfest"
+
+
+def print_welcome_message() -> None:
+    rule = Rule(
+        '[b]Your personal opensource [purple]Scout',
+        align="center",
+        style="yellow"
+    )
+    console.print(rule)
+    print("")
 
 
 def get_url():
@@ -92,6 +103,7 @@ def display_table(table_data):
 
 
 def cli() -> None:
+    print_welcome_message()
     url = get_url()
     console.clear()
     response = request(url)
