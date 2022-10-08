@@ -30,15 +30,21 @@ BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C=1000%20lang
 noColor = False;
 
 def get_url():
-    standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
+    if noColor:
+        standard = console.input("Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
+        lang = console.input("Project language: \[python] ")
+        keyword = console.input("You can enter a keyword for the search: \[optional] ")
+    else:
+        standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
+        lang = console.input("Project language: \[python] ")
+        keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
+
     if standard.lower() in ("y", "yes", ""):
         max_stars = 1000
     else:
         max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
-    lang = console.input("Project language: \[python] ")
     if lang == "":
         lang = "python"
-    keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
     if keyword != "":
         keyword = f"{keyword} "
     url = BASE_URL.format(keyword, max_stars, lang)
