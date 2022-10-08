@@ -64,8 +64,8 @@ def get_url():
 
             if keyword != "":
                 keyword = f"{keyword} "
-                url = BASE_URL.format(keyword, max_stars, lang)
-                return url
+            url = BASE_URL.format(keyword, max_stars, lang)
+            return url
 
     else:
         url = BASE_URL.format('python', 1000, 'python')
