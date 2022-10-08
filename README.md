@@ -7,10 +7,7 @@ Have you noticed that often the best repos to contribute to have somewhere betwe
 You can search repos with the exact amount of stars you wish as well as your language and additional optional keywords.
 
 ## Install
-1. Make sure you have python and git installed
-2. Clone this repository with ```git clone https://github.com/TechWiz-3/scout.git```
-3. Change into the scout directory and open a terminal emulator (e.g. CMD on Windows)
-4. Install the following dependencies with these commands.
+
 ```
 pip install gh-scout
 ```
