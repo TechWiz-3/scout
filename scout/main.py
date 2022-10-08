@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-from unicodedata import name
 import requests
 import random
 import os
@@ -157,11 +156,7 @@ def get_url():
     themeColor = themeSetter()
     try:
         standard = console.input(theme.get("standard").get(themeColor))
-        
-        # standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
-        # lang = console.input("Project language: \[python] ")
         lang = console.input(theme.get("lang").get(themeColor))
-        # keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
         keyword = console.input(theme.get("keyword").get(themeColor))
 
     except KeyboardInterrupt:
@@ -172,7 +167,6 @@ def get_url():
         if standard.lower() in ("y", "yes", ""):
             max_stars = 1000
         else:
-            # max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
             max_stars = int(console.input(theme.get("max_star").get(themeColor)))
 
         if lang == "":
