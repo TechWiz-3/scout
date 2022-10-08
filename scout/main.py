@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
-from email.policy import default
 import argparse
-from pickle import FALSE
 import requests
 import random
 import os
 import time
 import re
+import sys
 from datetime import datetime as dt
 
 from contextlib import contextmanager
 
 from rich.live import Live
 from rich.console import Console
+from rich.rule import Rule
 from rich.table import Table
 from rich.markdown import Markdown
 
