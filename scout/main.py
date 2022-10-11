@@ -9,7 +9,7 @@ import sys
 from datetime import datetime as dt
 
 from contextlib import contextmanager
-
+import argparse
 from rich.live import Live
 from rich.console import Console
 from rich.rule import Rule
@@ -17,6 +17,14 @@ from rich.table import Table
 from rich.markdown import Markdown
 
 console = Console()
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    '--standard', action='store_true', required=False,
+    help='Run the standard query for Python repos under 1k stars'
+)
+
+args = parser.parse_args()
 
 TOKEN = os.getenv("SCOUT_TOKEN")
 
@@ -37,28 +45,35 @@ def print_welcome_message() -> None:
 
 
 def get_url():
-    try:
-        standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
-        lang = console.input("Project language: \[python] ")
-        keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
-
-    except KeyboardInterrupt:
-        print('\nFarewell my friend, beware the crickets.\n')
-        sys.exit(1)
-
+    if args.standard:
+        keyword = ''
+        max_stars = '1000'
+        lang = 'python'
     else:
-        if standard.lower() in ("y", "yes", ""):
-            max_stars = 1000
+        try:
+            standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
+            lang = console.input("Project language: \[python] ")
+            keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
+
+        except KeyboardInterrupt:
+            print('\nFarewell my friend, beware the crickets.\n')
+            sys.exit(1)
+
         else:
-            max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
+            if standard.lower() in ("y", "yes", ""):
+                max_stars = 1000
+            else:
+                max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
 
-        if lang == "":
-            lang = "python"
+            if lang == "":
+                lang = "python"
 
-        if keyword != "":
-            keyword = f"{keyword} "
-        url = BASE_URL.format(keyword, max_stars, lang)
-        return url
+            if keyword != "":
+                keyword = f"{keyword} "
+
+    url = BASE_URL.format(keyword, max_stars, lang)
+    return url
+
 
 def request(url):
     page = random.randint(1,3)
