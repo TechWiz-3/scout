@@ -93,7 +93,7 @@ def get_table_data(response: str) -> list:
         table_data.append(
                     [
                         project_name, project["description"],
-                        str(stars), str(issues), topics, time
+                        str(stars), str(issues), str(forks), topics, time
                     ]
                 )
     return table_data
