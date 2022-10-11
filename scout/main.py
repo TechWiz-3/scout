@@ -88,9 +88,10 @@ def get_table_data(response: str) -> list:
             time = f"{str(delta.days)} day"
         else:
             time = f"{str(delta.days)} days"
+        project_name=project['full_name']
         table_data.append(
                     [
-                        "[link={}]{}[/link]".format(project["html_url"], project["full_name"]), project["description"],
+                        project_name, project["description"],
                         str(stars), str(issues), topics, time
                     ]
                 )
