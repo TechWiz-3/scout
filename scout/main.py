@@ -18,13 +18,15 @@ from rich.markdown import Markdown
 
 console = Console()
 
-args_parse = argparse.ArgumentParser()
-args_parse.add_argument('--standard', action='store_true', required=False, help='Runs script without prompts')
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    '--standard', action='store_true', required=False,
+    help='Run the standard query for Python repos under 1k stars'
+)
 
-console_args = args_parse.parse_args()
+args = parser.parse_args()
 
 TOKEN = os.getenv("SCOUT_TOKEN")
-print(os.environ['SCOUT_TOKEN'])
 
 HEADERS = {'Authorization': 'token ' + TOKEN}
 
@@ -43,7 +45,11 @@ def print_welcome_message() -> None:
 
 
 def get_url():
-    if console_args.standard is False:
+    if args.standard:
+        keyword = ''
+        max_stars = '1000'
+        lang = 'python'
+    else:
         try:
             standard = console.input("[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
             lang = console.input("Project language: \[python] ")
@@ -64,12 +70,9 @@ def get_url():
 
             if keyword != "":
                 keyword = f"{keyword} "
-            url = BASE_URL.format(keyword, max_stars, lang)
-            return url
 
-    else:
-        url = BASE_URL.format('python', 1000, 'python')
-        return url
+    url = BASE_URL.format(keyword, max_stars, lang)
+    return url
 
 
 def request(url):
