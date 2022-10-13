@@ -28,11 +28,14 @@ args = parser.parse_args()
 
 TOKEN = os.getenv("SCOUT_TOKEN")
 
-HEADERS = {'Authorization': 'token ' + TOKEN}
-
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
 BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C={}%20language:{}%20topic:hacktoberfest"
 
+
+def get_headers() -> str:
+    if TOKEN == None:
+        print("You don't have the Github token")
+    return {'Authorization': 'token ' + token if TOKEN else ""}
 
 def print_welcome_message() -> None:
     rule = Rule(
@@ -77,9 +80,15 @@ def get_url():
 
 def request(url):
     page = random.randint(1,3)
-    response = requests.get(f"{url}&page={page}", headers=HEADERS)
-    response = response.json()
-    return response
+    response = requests.get(f"{url}&page={page}", headers=get_headers())
+    status_code = response.status_code
+
+    response_json = response.json()
+
+    if response_json.get("items") is None and status_code == 403:
+        print("API rate limit exceeded, use the Github token")
+        exit()
+    return response_json
 
 
 def get_table_data(response: str) -> list:
@@ -96,6 +105,7 @@ def get_table_data(response: str) -> list:
         #day = re.match(time, r"^[0-9]{4}-[0-9]{2}-[0-9]{2}")
         time = time[:10]
         time = dt.strptime(time, "%Y-%m-%d")
+
         if time.date() == dt.today().date():
             time = "Today"
         else:
@@ -129,12 +139,12 @@ def display_table(table_data):
             table.add_row(*row)
             time.sleep(0.5)
 
-
 def cli() -> None:
     print_welcome_message()
     url = get_url()
     console.clear()
-    response = request(url)
+    for i in range(0,30):
+        response = request(url)
     table_data = get_table_data(response)
     display_table(table_data)
 
