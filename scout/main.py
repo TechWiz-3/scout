@@ -143,8 +143,7 @@ def cli() -> None:
     print_welcome_message()
     url = get_url()
     console.clear()
-    for i in range(0,30):
-        response = request(url)
+    response = request(url)
     table_data = get_table_data(response)
     display_table(table_data)
 
