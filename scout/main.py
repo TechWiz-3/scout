@@ -33,9 +33,9 @@ BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C={}%20langua
 
 
 def get_headers() -> str:
-    if TOKEN == None:
-        print("You don't have the Github token")
-    return {'Authorization': 'token ' + token if TOKEN else ""}
+    if not TOKEN:
+        print("You aren't using a Github token, this may result in ratelimits.")
+    return {'Authorization': 'token ' + TOKEN if TOKEN else ""}
 
 def print_welcome_message() -> None:
     rule = Rule(
@@ -85,9 +85,14 @@ def request(url):
 
     response_json = response.json()
 
-    if response_json.get("items") is None and status_code == 403:
-        print("API rate limit exceeded, use the Github token")
+    if response_json.get("items") is None:
+        if status_code == 403:
+            print("API rate limit exceeded, use the Github token")
+        elif status_code == 401:
+            print("GitHub Token invalid!")
+        console.print(f"\n{str(response_json)}")  # print response from gh api
         exit()
+
     return response_json
 
 
