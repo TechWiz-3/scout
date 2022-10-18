@@ -24,3 +24,12 @@ Before running `scout`:
    1. On windows, press <kbd>win</kbd> + <kbd>r</kbd>, type in `scout`, and click Ok.
 
 ![Example](./example.png)
+
+# Contributors ❤️
+<br>
+<h1 align="center">
+ <b>Thanks to these amazing people
+<h1>
+<a href="https://github.com/TechWiz-3/scout/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=TechWiz-3/scout&&max=817" />
+</a>
