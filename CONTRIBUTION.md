@@ -18,7 +18,7 @@ Here are a few things that will help us resolve your issues:
 
 Follow the below mentioned steps to open a pull request(PR):
 
-#### If you don't have git on your machine, [install it](https://help.github.com/articles/set-up-git/).
+#### If you don't have git on your machine, install it from [here](https://git-scm.com/downloads).
 
 ## Fork this repository
 
