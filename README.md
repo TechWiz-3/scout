@@ -25,7 +25,7 @@ Before running `scout`:
 
 ![Example](./example.png)
 
-# Contributors ❤️
+## Contributors ❤️
 <br>
 <h1 align="center">
  <b>Thanks to these amazing people
