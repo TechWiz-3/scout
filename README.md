@@ -1,5 +1,15 @@
 # Scout
-
+<p align="center">
+  <a href="https://github.com/TechWiz-3/scout">
+   <img alt="GitHub Repository Stars Count" src="https://img.shields.io/github/stars/TechWiz-3/scout?style=social" />
+  </a>
+  <a href="https://github.com/TechWiz-3/scout">
+  <img alt="Github Repository Fork Count" src="https://img.shields.io/github/forks/TechWiz-3/scout?style=social">
+  </a>
+  <a href="https://github.com/TechWiz-3/scout">
+   <img alt="Number of Contributers" src="https://img.shields.io/github/contributors/TechWiz-3/scout?style=social">
+  </a>    
+</p>
 ⭐ Find hacktoberfest repos from your terminal by getting repos by the range of stars they have  
 
 Have you noticed that often the best repos to contribute to have somewhere between 5-1000 stars? To find these repos on GitHub however, is quite hard! With scout, this issue ends.  
