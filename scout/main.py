@@ -100,10 +100,10 @@ def get_table_data(response: str) -> list:
             time = "Today"
         else:
             delta = dt.today().date() - time.date()
-        if delta.days == 1:
-            time = f"{str(delta.days)} day"
-        else:
-            time = f"{str(delta.days)} days"
+            if delta.days == 1:
+                time = f"{str(delta.days)} day"
+            else:
+                time = f"{str(delta.days)} days"
         project_name=project['full_name']
         table_data.append(
                     [
