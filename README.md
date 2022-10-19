@@ -2,9 +2,9 @@
 
 <p align="center">
 
-[![Stars](https://img.shields.io/github/stars/TechWiz-3/scout?style=for-the-badge)](./STARS)
-[![Forks](https://img.shields.io/github/forks/TechWiz-3/scout?style=for-the-badge)](./FORKS)
-[![Contributors](https://img.shields.io/github/contributors/TechWiz-3/scout?style=for-the-badge)](./CONTRIBUTORS)
+[![Stars](https://img.shields.io/github/stars/TechWiz-3/scout?style=flat-square)](./STARS)
+[![Forks](https://img.shields.io/github/forks/TechWiz-3/scout?style=flat-square)](./FORKS)
+[![Contributors](https://img.shields.io/github/contributors/TechWiz-3/scout?style=flat-square)](./CONTRIBUTORS)
 
 </p>
 ⭐ Find hacktoberfest repos from your terminal by getting repos by the range of stars they have  
