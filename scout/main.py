@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from turtle import color
 from typing import Dict
 
 import requests
