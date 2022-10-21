@@ -10,8 +10,8 @@ setup(
     author="Zac the Wise aka TechWiz-3",
     version='0.3.3',
     description="⭐ Find hacktoberfest repos to contribute to from your CLI",
-#    long_description_content_type='text/markdown',
-#    long_description=long_description,
+    long_description_content_type='text/markdown',
+    long_description=read_file("README.md"),
     packages=find_packages(),
     entry_points='''
         [console_scripts]
