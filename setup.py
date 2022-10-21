@@ -1,8 +1,14 @@
 from setuptools import setup, find_packages
-#from pathlib import Path
+from pathlib import Path
 
 #project_dir = Path(__file__).parent
 #long_description = (project_dir / "README.md").read_text()
+
+
+
+def read_file(rel_path: str):
+    return Path(__file__).parent.joinpath(rel_path).read_text()
+
 
 setup(
     name="gh-scout",
