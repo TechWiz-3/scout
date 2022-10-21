@@ -16,7 +16,6 @@ from rich.console import Console
 from rich.rule import Rule
 from rich.table import Table
 from rich.markdown import Markdown
-
 console = Console()
 
 parser = argparse.ArgumentParser()
@@ -30,14 +29,18 @@ parser.add_argument(
     help='Show repos Forks'
 )
 
+parser.add_argument(
+    '--nocolor', action='store_true', required=False,
+    help='Colors ommitted from output'
+)
 
 args = parser.parse_args()
+no_color = args.nocolor
 
 TOKEN = os.getenv("SCOUT_TOKEN")
 
 # BASE_URL = "https://api.github.com/search/repositories?q=stars:%3E={}%20language:{}%20topic:hacktoberfest"
 BASE_URL = "https://api.github.com/search/repositories?q={}stars:%3C={}%20language:{}%20topic:hacktoberfest"
-
 
 def get_headers() -> dict[str, str]:
     if not TOKEN:
@@ -46,11 +49,18 @@ def get_headers() -> dict[str, str]:
 
 
 def print_welcome_message() -> None:
-    rule = Rule(
-        '[b]Your personal opensource [purple]Scout',
-        align="center",
-        style="yellow"
-    )
+    if no_color:
+        rule = Rule(
+            '[b]Your personal opensource Scout',
+            align="center"
+        )
+    else:
+        rule = Rule(
+            '[b]Your personal opensource [purple]Scout',
+            align="center",
+            style="yellow"
+        )
+
     console.print(rule)
     print("")
 
@@ -61,11 +71,23 @@ def get_url():
         max_stars = '1000'
         lang = 'python'
     else:
+        if not no_color:
+            standard_style = "[purple]"
+            keyword_style = "[purple]"
+            star_style = "[blue]"
+        else:
+            standard_style = ""
+            keyword_style = ""
+            star_style = ""
+
         try:
             standard = console.input(
-                "[purple]Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: ")
+                f"{standard_style}Shall I use the standard search which gets repos in the 1k stars range? \[y/n]: "
+            )
             lang = console.input("Project language: \[python] ")
-            keyword = console.input("[purple]You can enter a keyword for the search: \[optional] ")
+            keyword = console.input(
+                f"{keyword_style}You can enter a keyword for the search: \[optional] "
+            )
 
         except KeyboardInterrupt:
             print('\nFarewell my friend, beware the crickets.\n')
@@ -75,7 +97,11 @@ def get_url():
             if standard.lower() in ("y", "yes", ""):
                 max_stars = 1000
             else:
-                max_stars = int(console.input("[blue]Star count  range \[5-1000 is ideal]: "))
+                max_stars = int(
+                    console.input(
+                        f"{star_style}Star count  range \[5-1000 is ideal]: "
+                    )
+                )
 
             if lang == "":
                 lang = "python"
@@ -142,17 +168,30 @@ def get_table_data(response: str) -> list:
         )
     return table_data
 
+def create_table(table):
+    if no_color:
+        table.add_column("Project", header_style="bold", style="bold")
+        table.add_column("Description", header_style="bold", style="italic")
+        table.add_column("Stars", header_style="bold ")
+        table.add_column("Issues", header_style="bold ")
+        if args.forks:
+            table.add_column("Forks", header_style="bold ")
+        table.add_column("Tags", header_style="bold")
+        table.add_column("Last updated", header_style="bold")
+    else:
+        table.add_column("Project", header_style="bold cyan", style="bold cyan")
+        table.add_column("Description", header_style="bold green", style="italic green")
+        table.add_column("Stars", header_style="bold yellow", style="yellow")
+        table.add_column("Issues", header_style="bold grey66", style="grey66")
+        if args.forks:
+            table.add_column("Forks", header_style="bold dark_orange", style="dark_orange")
+        table.add_column("Tags", header_style="bold")
+        table.add_column("Last updated", header_style="red bold", style="red")
+
 
 def display_table(table_data):
     table = Table(padding=(0, 1, 1, 1))
-    table.add_column("Project", header_style="bold cyan", style="bold cyan")
-    table.add_column("Description", header_style="bold green", style="italic green")
-    table.add_column("Stars", header_style="bold yellow", style="yellow")
-    table.add_column("Issues", header_style="bold grey66", style="grey66")
-    if args.forks:
-        table.add_column("Forks", header_style="bold dark_orange", style="dark_orange")
-    table.add_column("Tags", header_style="bold")
-    table.add_column("Last updated", header_style="red bold", style="red")
+    create_table(table)
     table.add_row(*table_data[0])
     with Live(table, console=console, refresh_per_second=4):
         for row in table_data[1:]:
