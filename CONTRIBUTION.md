@@ -53,7 +53,7 @@ Change to the repository directory on your computer (if you are not already ther
 cd scout
 ```
 
-Now create a branch using the `git switch` command:
+Now create a branch and select that branch using the `git switch` command:
 
 ```
 git switch -c your-new-branch-name
@@ -94,6 +94,7 @@ replacing `your-branch-name` with the name of the branch you created earlier.
 ## Submit your changes for review
 
 If you go to your repository on GitHub, you'll see a `Compare & pull request` button. Click on that button.
+Before Submit Your Pull Request Make Sure You Write Everything In Comment What You've Added or Changed.
 
 Now submit the pull request.
 
