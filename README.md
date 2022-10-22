@@ -31,13 +31,13 @@ Before running `scout`:
 4. Now you're good to go! Run `scout` to start!
    1. On windows, press <kbd>win</kbd> + <kbd>r</kbd>, type in `scout`, and click Ok.
 
-![Example](screenshot/standard_output.png)
+![Example](https://github.com/TechWiz-3/scout/raw/c84a9f0e601c1db1369aadeff0c9b920c7de9085/screenshot/standard_output.png)
 
 ## Show Forks Option
 ```bash
 scout --forks
 ```
-![Example](screenshot/show_forks_option.png)
+![Example](https://github.com/TechWiz-3/scout/raw/c84a9f0e601c1db1369aadeff0c9b920c7de9085/screenshot/show_forks_option.png)
 
 ## Contributors ❤️
 <br>
