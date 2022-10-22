@@ -1,8 +1,14 @@
 from setuptools import setup, find_packages
-#from pathlib import Path
+from pathlib import Path
 
 #project_dir = Path(__file__).parent
 #long_description = (project_dir / "README.md").read_text()
+
+
+
+def read_file(rel_path: str):
+    return Path(__file__).parent.joinpath(rel_path).read_text()
+
 
 setup(
     name="gh-scout",
@@ -10,8 +16,8 @@ setup(
     author="Zac the Wise aka TechWiz-3",
     version='0.3.3',
     description="⭐ Find hacktoberfest repos to contribute to from your CLI",
-#    long_description_content_type='text/markdown',
-#    long_description=long_description,
+    long_description_content_type='text/markdown',
+    long_description=read_file("README.md"),
     packages=find_packages(),
     entry_points='''
         [console_scripts]
