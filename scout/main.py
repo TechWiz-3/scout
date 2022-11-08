@@ -21,17 +21,17 @@ console = Console()
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--standard', action='store_true', required=False,
-    help='Run the standard query for Python repos under 1k stars'
+    help='run the standard query for Python repos under 1k stars'
 )
 
 parser.add_argument(
     '--forks', action='store_true', required=False,
-    help='Show repos Forks'
+    help='show repos Forks'
 )
 
 parser.add_argument(
     '--nocolor', action='store_true', required=False,
-    help='Colors ommitted from output'
+    help='colors ommitted from output'
 )
 
 args = parser.parse_args()
