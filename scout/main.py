@@ -16,7 +16,6 @@ from rich.console import Console
 from rich.rule import Rule
 from rich.table import Table
 from rich.markdown import Markdown
-console = Console()
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -36,6 +35,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 no_color = args.nocolor
+console = Console(no_color=no_color)
 
 TOKEN = os.getenv("SCOUT_TOKEN")
 
@@ -49,17 +49,11 @@ def get_headers() -> dict[str, str]:
 
 
 def print_welcome_message() -> None:
-    if no_color:
-        rule = Rule(
-            '[b]Your personal opensource Scout',
-            align="center"
-        )
-    else:
-        rule = Rule(
-            '[b]Your personal opensource [purple]Scout',
-            align="center",
-            style="yellow"
-        )
+    rule = Rule(
+        '[b]Your personal opensource [purple]Scout',
+        align="center",
+        style="yellow"
+    )
 
     console.print(rule)
     print("")
@@ -71,14 +65,10 @@ def get_url():
         max_stars = '1000'
         lang = 'python'
     else:
-        if not no_color:
-            standard_style = "[purple]"
-            keyword_style = "[purple]"
-            star_style = "[blue]"
-        else:
-            standard_style = ""
-            keyword_style = ""
-            star_style = ""
+        standard_style = "[purple]"
+        keyword_style = "[purple]"
+        star_style = "[blue]"
+
 
         try:
             standard = console.input(
@@ -169,24 +159,14 @@ def get_table_data(response: str) -> list:
     return table_data
 
 def create_table(table):
-    if no_color:
-        table.add_column("Project", header_style="bold", style="bold")
-        table.add_column("Description", header_style="bold", style="italic")
-        table.add_column("Stars", header_style="bold ")
-        table.add_column("Issues", header_style="bold ")
-        if args.forks:
-            table.add_column("Forks", header_style="bold ")
-        table.add_column("Tags", header_style="bold")
-        table.add_column("Last updated", header_style="bold")
-    else:
-        table.add_column("Project", header_style="bold cyan", style="bold cyan")
-        table.add_column("Description", header_style="bold green", style="italic green")
-        table.add_column("Stars", header_style="bold yellow", style="yellow")
-        table.add_column("Issues", header_style="bold grey66", style="grey66")
-        if args.forks:
-            table.add_column("Forks", header_style="bold dark_orange", style="dark_orange")
-        table.add_column("Tags", header_style="bold")
-        table.add_column("Last updated", header_style="red bold", style="red")
+    table.add_column("Project", header_style="bold cyan", style="bold cyan")
+    table.add_column("Description", header_style="bold green", style="italic green")
+    table.add_column("Stars", header_style="bold yellow", style="yellow")
+    table.add_column("Issues", header_style="bold grey66", style="grey66")
+    if args.forks:
+        table.add_column("Forks", header_style="bold dark_orange", style="dark_orange")
+    table.add_column("Tags", header_style="bold")
+    table.add_column("Last updated", header_style="red bold", style="red")
 
 
 def display_table(table_data):
